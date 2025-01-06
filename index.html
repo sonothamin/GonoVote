@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuktoMoncho - Democratic Discourse Platform</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali');
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Literata';
+            font-family: 'Noto Serif Bengali';
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #282828;
+            --accent: #4a4a4a;
+            --text: #e0e0e0;
+            --subtle: #3a3a3a;
+            --highlight: #707070;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid var(--subtle);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.7rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .mobile-locale-toggle {
+            display: none;
+        }
+
+        #localeToggle {
+            display: block;
+            background-color: transparent;
+            color: #ffffff;
+            border-bottom: 4px dotted #dadada;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            transform: 0 5px;
+            transform: translateY(-3px);
+            font-size: 1.2rem;
+            cursor: pointer;
+
+        }
+
+        #localeToggle:hover {
+            font-size: 1.3rem;
+            border-bottom: 3px solid #999999;
+            transition: ease-in-out 200ms;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+
+        .header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg,
+                    rgba(74, 74, 74, 0.05),
+                    rgba(74, 74, 74, 0.05) 1px,
+                    transparent 1px,
+                    transparent 10px);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+
+        .section {
+            padding: 6rem 2rem;
+        }
+
+        .section-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .manifesto {
+            background-color: var(--secondary);
+            padding: 4rem 2rem;
+        }
+
+        .manifesto-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .manifesto-content p {
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .feature {
+            background-color: var(--secondary);
+            padding: 2rem;
+            border: 1px solid var(--subtle);
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .stat {
+            padding: 2rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--subtle);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--highlight);
+        }
+
+        .cta {
+            text-align: center;
+            padding: 6rem 2rem;
+            background-color: var(--secondary);
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            background-color: var(--accent);
+            color: var(--text);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--highlight);
+        }
+
+        .governance {
+            padding: 4rem 2rem;
+            background-color: var(--primary);
+        }
+
+        .governance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .governance-item {
+            padding: 2rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--subtle);
+        }
+
+        .footer {
+            padding: 4rem 2rem;
+            background-color: var(--secondary);
+            text-align: center;
+            border-top: 1px solid var(--subtle);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav {
+                display: block;
+                justify-content: center;
+            }
+
+            .mobile-locale-toggle {
+                display: block;
+                background-color: transparent;
+                color: #ffffff;
+                border-bottom: 3px solid #999999;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                transform: 0 5px;
+                transform: translateY(-3px);
+            }
+
+
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-left: 3px solid var(--accent);
+            background-color: var(--subtle);
+        }
+
+        .methodology {
+            background-color: var(--primary);
+            padding: 4rem 2rem;
+        }
+
+        .methodology-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .methodology h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: normal;
+        }
+
+        .graph-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: var(--secondary);
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--subtle);
+        }
+
+        #quote-text {
+            font-size: 1.1rem;
+            color: #999999;
+        }
+
+        #quote-author {
+            font-size: 0.8rem;
+            color: #575757;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="en nav-logo">MuktoMoncho</div>
+            <div class="bn nav-logo">মুক্তমঞ্চ</div>
+            <button href="" id="localeToggle-m" class="mobile-locale-toggle">English</button>
+            <div class="nav-links">
+                <a href="#manifesto" class="en">Manifesto</a>
+                <a href="#methodology" class="en">Methodology</a>
+                <a href="#governance" class="en">Governance</a>
+                <a href="#join" class="en">Join</a>
+                <a href="#manifesto" class="bn">ঘোষণাপত্র</a>
+                <a href="#methodology" class="bn">পদ্ধতি</a>
+                <a href="#governance" class="bn">শাসন</a>
+                <a href="#join" class="bn">যোগদান করুন</a>
+                <button href="#" id="localeToggle" class="nav-links">English</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header">
+        <h1 class="en">MuktoMoncho</h1>
+        <h1 class="bn">মুক্তমঞ্চ</h1>
+        <div id="quote-container" class="quote-box">
+            <span id="quote-text"></span>
+            <div id="quote-author" class="quote-author"></div>
+        </div>
+    </header>
+
+    <section id="manifesto" class="manifesto">
+        <div class="manifesto-content">
+            <h2 class="section-title en">Manifesto</h2>
+            <h2 class="section-title bn">ঘোষণাপত্র</h2>
+            <p>In an era where public discourse is increasingly polarized and constrained by social pressures,
+                MuktoMoncho
+                emerges as a sanctuary for genuine intellectual exchange. We believe that anonymity, when properly
+                structured, can foster the kind of honest dialogue essential for democratic society.</p>
+
+            <div class="quote">
+                "The quality of a democracy is only as good as the quality of its discourse."
+            </div>
+
+            <p>Our platform is built on three foundational principles:</p>
+            <p>1. Intellectual Honesty: Anonymous participation allows individuals to express views without fear of
+                social or professional repercussions, enabling a more genuine exchange of ideas.</p>
+            <p>2. Structured Deliberation: Our voting mechanisms are designed not merely to tally opinions, but to
+                facilitate reasoned debate and collective decision-making.</p>
+            <p>3. Democratic Accountability: While users remain anonymous, our platform incorporates sophisticated
+                mechanisms to prevent manipulation and ensure the integrity of discussions.</p>
+        </div>
+    </section>
+
+    <section id="methodology" class="methodology">
+        <div class="methodology-content">
+            <h2 class="section-title">Methodology</h2>
+            <h3>Voting Mechanics</h3>
+            <p>Our voting system employs a sophisticated weighted algorithm that considers:</p>
+            <div class="graph-placeholder">
+                <img src="/api/placeholder/800/400" alt="Voting Methodology Diagram" />
+            </div>
+
+            <h3>Authentication Protocol</h3>
+            <p>While maintaining anonymity, our platform implements robust verification processes to ensure:</p>
+            <ul>
+                <li>One person, one voice principle</li>
+                <li>Prevention of automated manipulation</li>
+                <li>Integrity of voting processes</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="governance" class="governance">
+        <div class="section-content">
+            <h2 class="section-title">Platform Governance</h2>
+            <div class="governance-grid">
+                <div class="governance-item">
+                    <h3>Decision Framework</h3>
+                    <p>Our governance model integrates direct user participation with systematic oversight, ensuring
+                        both democratic input and platform integrity.</p>
+                </div>
+                <div class="governance-item">
+                    <h3>Content Moderation</h3>
+                    <p>A decentralized approach to moderation, combining community oversight with algorithmic detection
+                        of harmful content.</p>
+                </div>
+                <div class="governance-item">
+                    <h3 class="en">Development Roadmap</h3>
+                    <h3 class="bn">ডেভেলপমেন্ট রোডম্যাপ</h3>
+                    <p>Platform evolution is guided by user consensus, with major changes subject to community
+                        deliberation and voting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <div class="en stat-number">99.9%</div>
+            <div class="bn stat-number">৯৯.৯৯%</div>
+            <p class="en">Poll Anonymity</p>
+            <p class="bn">ভোটের গোপনীয়তা </p>
+        </div>
+        <div class="stat">
+            <div class="stat-number">0</div>
+            <p class="en">Free Speech</p>
+            <p class="bn">মুক্তবাক</p>
+        </div>
+        <div class="stat">
+            <div class="stat-number">24/7</div>
+            <p class="en">Moderation</p>
+            <p class="bn">মডারেশন </p>
+        </div>
+    </section>
+
+    <section id="join" class="cta">
+        <h2 class="en section-title">Join the Democratic Revolution</h2>
+        <h2 class="bn section-title">গণতান্ত্রিক বিপ্লবে যোগ দিন</h2>
+        <p>Be part of a platform that's redefining online discourse and democratic participation.</p>
+        <button class="en cta-button">Request Early Access</button>
+        <button class="bn cta-button">আর্লি অ্যাকসেস</button>
+    </section>
+
+    <footer class="footer">
+        <p class="en">MuktoMoncho © 2025</p>
+        <p class="bn">মুক্তমঞ্চ © ২০২৫</p>
+        <p class="en">Advancing Democracy</p>
+        <p class="bn">গণতন্ত্রের অগ্রযাত্রা</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scroll for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Intersection Observer for fade-in animations
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Apply to sections
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(section);
+            });
+
+            // Navbar scroll effect
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('.nav');
+                const currentScroll = window.pageYOffset;
+
+                if (currentScroll > lastScroll) {
+                    nav.style.transform = 'translateY(-100%)';
+                } else {
+                    nav.style.transform = 'translateY(0)';
+                }
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+    <script>
+        const quotes = {
+            en: [
+                { text: "The ballot is stronger than the bullet.", author: "Abraham Lincoln" },
+                { text: "Freedom is the right to tell people what they do not want to hear.", author: "George Orwell" },
+                { text: "In a democracy, the highest office is that of the citizen.", author: "Louis Brandeis" },
+                { text: "If we desire respect for the law, we must first make the law respectable.", author: "Louis D. Brandeis" },
+                { text: "Democracy is not just the right to vote; it is the right to live in dignity.", author: "Naomi Klein" },
+                { text: "An informed citizenry is at the heart of a dynamic democracy.", author: "Thomas Jefferson" },
+                { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+                { text: "Without debate, without criticism, no administration and no country can succeed—and no republic can survive.", author: "John F. Kennedy" },
+                { text: "To sin by silence when they should protest makes cowards of men.", author: "Ella Wheeler Wilcox" },
+                { text: "Every voice counts, and every vote matters.", author: "" },
+                { text: "The price of freedom is eternal vigilance.", author: "Thomas Jefferson" },
+                { text: "Democracy is the government of the people, by the people, for the people.", author: "Abraham Lincoln" },
+                { text: "Power corrupts, and absolute power corrupts absolutely.", author: "Lord Acton" },
+                { text: "The right to vote is the cornerstone of democracy.", author: "Lyndon B. Johnson" }
+            ],
+            bn: [
+                { text: "বাক স্বাধীনতার মূল কথা হচ্ছে আপনি যা শুনতে চান না, আমার তা বলার অধিকার।", author: "হুমায়ুন আজাদ" },
+                { text: "আইনের শাসন সবসময় ন্যায়বিচার নিশ্চিত করে না।", author: "মাহাথির বিন মোহাম্মদ" },
+                { text: "গণমাধ্যম যার নিয়ন্ত্রণে সে জনমতও নিয়ন্ত্রণ করতে পারে।", author: "নোয়াম চমস্কি" },
+                { text: "ডিমোক্রেসি বড় ঠুনকো জিনিস; কখন যে কার অভিসম্পাতে ফেটে চৌচির হয়ে যায়, কেউ বলতে পারে না। তারপর আর কিছুতেই জোড়া লাগে না।", author: "সৈয়দ মুজতবা আলী" },
+                { text: "মানুষ কথা বলতে ভয় পেলে বুঝতে হবে গণতন্ত্র নেই।", author: "অমর্ত্য সেন" },
+                { text: "গণতন্ত্র মানুষের অধিকার সুরক্ষার জন্য সবচেয়ে কার্যকর ব্যবস্থা।", author: "নেলসন ম্যান্ডেলা" },
+                { text: "অন্তর্ভুক্তিমূলক সমাজই প্রকৃত গণতন্ত্র গড়ে তুলতে পারে।", author: "বৈরুত আহমেদ" },
+                { text: "গণতন্ত্রের সৌন্দর্য হলো ভিন্নমত থাকা সত্ত্বেও একসঙ্গে এগিয়ে যাওয়া।", author: "মহাত্মা গান্ধী" },
+                { text: "স্বাধীনতার প্রকৃত অর্থ হচ্ছে নিজের ইচ্ছামতো কথা বলা এবং কাজ করা।", author: "রবীন্দ্রনাথ ঠাকুর" },
+                { text: "আইনের শাসন প্রতিষ্ঠা করতে হলে আগে আইনকে সবার জন্য সমান করতে হবে।", author: "শেখ মুজিবুর রহমান" }
+            ]
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const quoteText = document.getElementById("quote-text");
+            const quoteAuthor = document.getElementById("quote-author");
+            const toggleButton = document.getElementById("localeToggle");
+            const MtoggleButton = document.getElementById("localeToggle-m");
+
+            // Function to set a random quote based on locale
+            const setQuote = (locale) => {
+                const selectedQuotes = quotes[locale];
+                const randomQuote = selectedQuotes[Math.floor(Math.random() * selectedQuotes.length)];
+                quoteText.textContent = randomQuote.text;
+                quoteAuthor.textContent = `~ ${randomQuote.author}`;
+            };
+
+            // Function to set language visibility, update title, and quote
+            const setLanguage = (locale) => {
+                const englishElements = document.querySelectorAll('.en');
+                const bengaliElements = document.querySelectorAll('.bn');
+                if (locale === 'en') {
+                    englishElements.forEach(el => el.style.display = 'block');
+                    bengaliElements.forEach(el => el.style.display = 'none');
+                    toggleButton.textContent = 'বাংলা';
+                    MtoggleButton.textContent = 'বাংলা';
+                    document.title = "MuktoMoncho";
+                } else {
+                    englishElements.forEach(el => el.style.display = 'none');
+                    bengaliElements.forEach(el => el.style.display = 'block');
+                    toggleButton.textContent = 'English';
+                    MtoggleButton.textContent = 'English';
+                    document.title = "মুক্তমঞ্চ";
+                }
+                // Save locale to localStorage
+                localStorage.setItem('locale', locale);
+
+                // Update quote for the selected language
+                setQuote(locale);
+            };
+
+            // Get the locale from localStorage or default to 'bn'
+            const savedLocale = localStorage.getItem('locale') || 'bn';
+            setLanguage(savedLocale);
+
+            // Add event listener for toggle buttons
+            toggleButton.addEventListener('click', () => {
+                const newLocale = (toggleButton.textContent === 'English') ? 'en' : 'bn';
+                setLanguage(newLocale);
+            });
+
+            MtoggleButton.addEventListener('click', () => {
+                const newLocale = (MtoggleButton.textContent === 'English') ? 'en' : 'bn';
+                setLanguage(newLocale);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
